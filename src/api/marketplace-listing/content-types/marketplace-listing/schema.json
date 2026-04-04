@@ -1,0 +1,92 @@
+{
+  "kind": "collectionType",
+  "collectionName": "marketplace_listings",
+  "info": {
+    "singularName": "marketplace-listing",
+    "pluralName": "marketplace-listings",
+    "displayName": "Marketplace Listing",
+    "description": "Service provider directory"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "company": {
+      "type": "string"
+    },
+    "providerType": {
+      "type": "string"
+    },
+    "specialties": {
+      "type": "json"
+    },
+    "bio": {
+      "type": "text"
+    },
+    "location": {
+      "type": "string"
+    },
+    "hourlyRate": {
+      "type": "decimal"
+    },
+    "projectRate": {
+      "type": "decimal"
+    },
+    "rating": {
+      "type": "decimal",
+      "default": 0
+    },
+    "reviewCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "isVerified": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["pending", "verified", "rejected"],
+      "default": "pending"
+    },
+    "availability": {
+      "type": "string"
+    },
+    "merchantsHelped": {
+      "type": "integer",
+      "default": 0
+    },
+    "teamSize": {
+      "type": "integer"
+    },
+    "languages": {
+      "type": "json"
+    },
+    "services": {
+      "type": "json"
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
+    },
+    "founderName": {
+      "type": "string"
+    },
+    "githubUrl": {
+      "type": "string"
+    },
+    "websiteUrl": {
+      "type": "string"
+    }
+  }
+}

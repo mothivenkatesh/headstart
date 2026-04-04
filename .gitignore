@@ -1,0 +1,17 @@
+node_modules/
+.tmp/
+.cache/
+dist/
+build/
+.env
+.env.local
+frontend/node_modules/
+frontend/.next/
+frontend/dev.log
+strapi.log
+*.log
+.DS_Store
+seed.js
+test-api.js
+test-full.js
+fix-seed.py

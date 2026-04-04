@@ -1,0 +1,202 @@
+{
+  "kind": "collectionType",
+  "collectionName": "up_users",
+  "info": {
+    "name": "user",
+    "description": "Extended user model for Fintech Circle",
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "username": {
+      "type": "string",
+      "minLength": 3,
+      "unique": true,
+      "configurable": false,
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "minLength": 6,
+      "configurable": false,
+      "required": true
+    },
+    "provider": {
+      "type": "string",
+      "configurable": false
+    },
+    "password": {
+      "type": "password",
+      "minLength": 6,
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "resetPasswordToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmationToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "role": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.role",
+      "inversedBy": "users",
+      "configurable": false
+    },
+    "handle": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "fullName": {
+      "type": "string",
+      "required": true
+    },
+    "bio": {
+      "type": "text"
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "coverImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "profileType": {
+      "type": "enumeration",
+      "enum": ["individual", "company"],
+      "default": "individual"
+    },
+    "jobTitle": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "companyType": {
+      "type": "enumeration",
+      "enum": [
+        "product_vendor",
+        "agency",
+        "nbfc",
+        "bank",
+        "payment_aggregator",
+        "insurtech",
+        "wealthtech",
+        "regtech",
+        "neobank",
+        "other"
+      ]
+    },
+    "companySize": {
+      "type": "string"
+    },
+    "foundedYear": {
+      "type": "integer"
+    },
+    "headquarters": {
+      "type": "string"
+    },
+    "companyDescription": {
+      "type": "text"
+    },
+    "location": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "linkedinUrl": {
+      "type": "string"
+    },
+    "twitterUrl": {
+      "type": "string"
+    },
+    "yearsOfExperience": {
+      "type": "integer"
+    },
+    "skills": {
+      "type": "json"
+    },
+    "verticals": {
+      "type": "json"
+    },
+    "isFreelancer": {
+      "type": "boolean",
+      "default": false
+    },
+    "availableForHire": {
+      "type": "boolean",
+      "default": false
+    },
+    "reputation": {
+      "type": "integer",
+      "default": 0
+    },
+    "badge": {
+      "type": "string"
+    },
+    "isVerified": {
+      "type": "boolean",
+      "default": false
+    },
+    "isAdmin": {
+      "type": "boolean",
+      "default": false
+    },
+    "followerCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "followingCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "blockedUsers": {
+      "type": "json"
+    },
+    "posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::post.post",
+      "mappedBy": "author"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "submittedBy"
+    },
+    "proofOfWorks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::proof-of-work.proof-of-work",
+      "mappedBy": "user"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jobs",
+  "info": {
+    "singularName": "job",
+    "pluralName": "jobs",
+    "displayName": "Job",
+    "description": "Job listings with salary ranges and skills"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "company": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "jobType": {
+      "type": "enumeration",
+      "enum": ["full_time", "part_time", "contract", "internship", "freelance"]
+    },
+    "location": {
+      "type": "string"
+    },
+    "isRemote": {
+      "type": "boolean",
+      "default": false
+    },
+    "salaryRange": {
+      "type": "string"
+    },
+    "vertical": {
+      "type": "string"
+    },
+    "experience": {
+      "type": "string"
+    },
+    "skills": {
+      "type": "json"
+    },
+    "applyUrl": {
+      "type": "string"
+    },
+    "postedBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "applications": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::job-application.job-application",
+      "mappedBy": "job"
+    }
+  }
+}

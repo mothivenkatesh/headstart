@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "deal_signals",
+  "info": {
+    "singularName": "deal-signal",
+    "pluralName": "deal-signals",
+    "displayName": "Deal Signal",
+    "description": "Investor interest signals"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "stage": {
+      "type": "enumeration",
+      "enum": ["pre_seed", "seed", "series_a", "series_b", "series_c", "growth"]
+    },
+    "amountRange": {
+      "type": "string"
+    },
+    "vertical": {
+      "type": "string"
+    },
+    "pitch": {
+      "type": "text"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

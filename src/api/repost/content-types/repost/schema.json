@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reposts",
+  "info": {
+    "singularName": "repost",
+    "pluralName": "reposts",
+    "displayName": "Repost",
+    "description": "Reposts with optional thoughts (quote repost)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "originalPost": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::post.post"
+    },
+    "thoughts": {
+      "type": "text"
+    }
+  }
+}

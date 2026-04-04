@@ -1,0 +1,87 @@
+{
+  "kind": "collectionType",
+  "collectionName": "posts",
+  "info": {
+    "singularName": "post",
+    "pluralName": "posts",
+    "displayName": "Post",
+    "description": "Social posts - discussions, questions, showcases, launches, polls"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "postType": {
+      "type": "enumeration",
+      "enum": ["discussion", "question", "showcase", "launch", "poll", "resource", "job"],
+      "default": "discussion"
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "posts"
+    },
+    "circle": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::circle.circle",
+      "inversedBy": "posts"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    },
+    "link": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "json"
+    },
+    "pollOptions": {
+      "type": "json"
+    },
+    "pollEndsAt": {
+      "type": "datetime"
+    },
+    "isAnonymous": {
+      "type": "boolean",
+      "default": false
+    },
+    "isPinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "upvoteCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "downvoteCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "commentCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "shareCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "post"
+    }
+  }
+}

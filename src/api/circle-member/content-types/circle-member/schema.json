@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "circle_members",
+  "info": {
+    "singularName": "circle-member",
+    "pluralName": "circle-members",
+    "displayName": "Circle Member",
+    "description": "Maps users to circles with lead flag"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "circle": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::circle.circle",
+      "inversedBy": "members"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "isLead": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

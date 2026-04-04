@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "proof_of_works",
+  "info": {
+    "singularName": "proof-of-work",
+    "pluralName": "proof-of-works",
+    "displayName": "Proof of Work",
+    "description": "Portfolio/work samples with metrics"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "proofOfWorks"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "metric": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}

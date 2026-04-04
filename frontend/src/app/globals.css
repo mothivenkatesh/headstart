@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Theme tokens — Bluesky-matched ─────────────── */
+:root {
+  color-scheme: light;
+  --surface: #FFFFFF;
+  --surface-secondary: #F5F5F5;
+  --text-primary: #171717;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --border: #E5E5E5;
+  --brand-light: #EBF0FE;
+  --brand-btn: #0C40D0;
+  --brand-btn-hover: #0932A4;
+  --brand-btn-active: #062374;
+  --hover-overlay: rgba(0,0,0,0.015);
+  --hover-subtle: rgba(0,0,0,0.03);
+  --card-bg: #FFFFFF;
+}
+
+/* Bluesky "dim" dark theme — #151D28 base */
+.dark {
+  color-scheme: dark;
+  --surface: #151D28;
+  --surface-secondary: #1C2636;
+  --text-primary: #F1F3F5;
+  --text-secondary: #A8B5C4;
+  --text-tertiary: #6B7F96;
+  --border: #2C3A4E;
+  --brand-light: #1A2A45;
+  --brand-btn: #3B82F6;
+  --brand-btn-hover: #5B9BF7;
+  --brand-btn-active: #2563EB;
+  --hover-overlay: rgba(255,255,255,0.03);
+  --hover-subtle: rgba(255,255,255,0.05);
+  --card-bg: #1C2636;
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Scrollbar — themed */
+::-webkit-scrollbar { width: 6px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+html { scroll-behavior: smooth; }
+
+/* Focus ring */
+*:focus-visible { @apply outline-none ring-2 ring-brand/20 ring-offset-1; }
+.dark *:focus-visible { ring-offset-color: var(--surface); }
+input:focus-visible, textarea:focus-visible { @apply ring-0 ring-offset-0; }
+
+/* Post card hover */
+.post-card { @apply transition-colors duration-75; }
+.post-card:hover { background-color: var(--hover-overlay); }
+
+/* Tab underline */
+.tab-item { @apply relative flex-1 flex items-center justify-center transition-colors duration-150 cursor-pointer; }
+.tab-item:hover { background-color: var(--hover-subtle); }
+.tab-item-inner { @apply relative py-4; }
+.tab-item-inner::after { content: ''; @apply absolute bottom-0 left-0 right-0 h-[3px] rounded-full bg-brand scale-x-0 transition-transform duration-200 origin-center; }
+.tab-item[data-active="true"] .tab-item-inner::after { @apply scale-x-100; }
+
+/* Vote pop */
+@keyframes vote-pop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+.vote-pop { animation: vote-pop 200ms ease-out; }
+
+/* Product rank */
+.rank-number { @apply text-2xl font-bold tabular-nums; color: var(--text-tertiary); }
+
+/* ─── Dark mode overrides for hardcoded colors ───── */
+.dark .bg-white { background-color: var(--surface) !important; }
+.dark .bg-gray-50, .dark .bg-gray-100 { background-color: var(--surface-secondary) !important; }
+.dark .border-gray-100, .dark .border-gray-200 { border-color: var(--border) !important; }
+.dark .text-gray-200, .dark .text-gray-300 { color: var(--text-tertiary) !important; }
+.dark .bg-black\/50 { background-color: rgba(0,0,0,0.7) !important; }
+.dark .bg-black\/40 { background-color: rgba(0,0,0,0.6) !important; }
+.dark .shadow-lg { box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; }
+
+/* Chat bubbles in dark mode */
+.dark .bg-brand { background-color: #3B82F6 !important; }
+
+/* ─── Mobile optimizations ─────────────────── */
+@media (max-width: 768px) {
+  body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+  button, a, [role="button"] { touch-action: manipulation; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  .overflow-y-auto, .overflow-x-auto { -webkit-overflow-scrolling: touch; }
+}
+
+.pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 16px); }
+
+/* Disable hover on touch */
+@media (hover: none) and (pointer: coarse) {
+  .post-card:hover { background-color: transparent; }
+  .tab-item:hover { background-color: transparent; }
+}
+@media (hover: none) and (pointer: coarse) {
+  .post-card:active { background-color: var(--hover-subtle); }
+  .tab-item:active { background-color: var(--hover-subtle); }
+}

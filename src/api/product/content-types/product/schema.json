@@ -1,0 +1,150 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": "Launchpad product submissions with lifecycle management"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "tagline": {
+      "type": "string",
+      "required": true,
+      "maxLength": 80
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "pricing": {
+      "type": "enumeration",
+      "enum": ["free", "freemium", "paid", "open_source", "contact_sales"]
+    },
+    "categories": {
+      "type": "json"
+    },
+    "links": {
+      "type": "json"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "screenshots": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images", "videos"]
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["draft", "pending", "scheduled", "launched", "featured", "archived", "rejected"],
+      "default": "draft"
+    },
+    "submittedBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "products"
+    },
+    "submittedAt": {
+      "type": "datetime"
+    },
+    "reviewedBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "reviewedAt": {
+      "type": "datetime"
+    },
+    "reviewNote": {
+      "type": "text"
+    },
+    "launchDate": {
+      "type": "date"
+    },
+    "launchWeek": {
+      "type": "integer"
+    },
+    "launchMonth": {
+      "type": "integer"
+    },
+    "launchYear": {
+      "type": "integer"
+    },
+    "votingEndsAt": {
+      "type": "datetime"
+    },
+    "upvoteCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "commentCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "rating": {
+      "type": "decimal",
+      "default": 0
+    },
+    "reviewCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "followerCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "viewCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "hotScore": {
+      "type": "decimal",
+      "default": 0
+    },
+    "weeklyRank": {
+      "type": "integer"
+    },
+    "monthlyRank": {
+      "type": "integer"
+    },
+    "yearlyRank": {
+      "type": "integer"
+    },
+    "badges": {
+      "type": "json"
+    },
+    "makers": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user"
+    },
+    "reviews": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-review.product-review",
+      "mappedBy": "product"
+    },
+    "website": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "json"
+    }
+  }
+}
