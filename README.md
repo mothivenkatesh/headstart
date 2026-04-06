@@ -1,61 +1,271 @@
-# 🚀 Getting started with Strapi
+# Headstart
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
+**The professional network for early stage founders.**
 
-### `develop`
+Headstart is a full-stack social platform where startup founders discuss ideas, launch products, find talent, and build in public. Think of it as a purpose-built community combining the best of X.com's feed, Product Hunt's launchpad, and Bluesky's design philosophy — tailored specifically for the early-stage startup ecosystem.
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+## Product Vision
+
+Most founder communities are scattered across Discord servers, Slack groups, Twitter threads, and LinkedIn posts. None of them are purpose-built for the startup journey. Headstart brings everything a founder needs into one place:
+
+- **A feed** where founders share what they're building, learning, and struggling with
+- **Circles** (like subreddits) organized by startup stage and vertical — Enterprise, Bootstrap, DevTool, D2C, AI & ML, Fundraising, and more
+- **A launchpad** to ship products and get upvotes, reviews, and feedback from fellow founders
+- **A jobs board** where startups post roles and talent applies directly
+- **Real-time messaging** for 1:1 conversations between founders
+- **Profiles** that showcase proof of work, skills, and startup experience
+
+## Architecture
 
 ```
+headstart/
+├── src/                    # Strapi v5 Backend
+│   ├── api/                # 21 content types with custom controllers
+│   ├── extensions/         # Extended user model
+│   └── index.ts            # Bootstrap: seed circles, permissions, cron
+├── config/                 # Strapi configuration
+│   ├── database.ts         # SQLite (dev) / PostgreSQL (prod)
+│   └── plugins.ts          # Socket.IO plugin for real-time
+├── frontend/               # Next.js 16 Frontend
+│   ├── src/app/            # App Router pages
+│   ├── src/components/     # UI component library
+│   └── src/lib/            # API client, auth, utilities
+└── types/                  # Generated TypeScript types
+```
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Backend** | Strapi v5 (Node.js, TypeScript) |
+| **Database** | SQLite (dev), PostgreSQL (production) |
+| **Frontend** | Next.js 16, React 19, TypeScript |
+| **Styling** | Tailwind CSS v3, CSS custom properties |
+| **Auth** | Clerk (signup/login) + Strapi JWT (API auth) |
+| **Real-time** | Socket.IO via @strapi-community/plugin-io |
+| **Design** | Bluesky-inspired dark mode, Inter font |
+
+## Modules
+
+### Feed
+The core social feed where founders share posts, discussions, polls, and resources. Every post belongs to a circle (mandatory, like choosing a subreddit). Posts support:
+- Rich text with image attachments (upload or URL)
+- Polls with 2-4 options and configurable duration (1/3/7 days)
+- Reddit-style upvote/downvote system
+- Reposts (instant share) and quote reposts (share with your thoughts)
+- Bookmarks, threaded comments, and "Show more" for long posts
+
+### Circles
+16 groups organized by startup stage and vertical:
+
+| Stage-based | Vertical-based |
+|---|---|
+| Early Stage | Fintech |
+| Growth Stage | EdTech |
+| Bootstrap | HealthTech |
+| Enterprise | Lending Tech |
+| | AI & ML |
+| | DevTool |
+| | D2C |
+
+Plus: Fundraising, GTM & Marketing, Hiring & Culture, Product & Design, Founder Life
+
+### Launchpad
+Product Hunt-style product launches with:
+- Multi-step submission flow (basics, details, media)
+- Admin approval workflow (draft → pending → launched)
+- Hacker News time-decay algorithm for "hot" ranking: `(votes-1)^0.8 / (ageHours+2)^1.8`
+- Star ratings (1-5) with written reviews
+- Hourly hotScore recalculation via background cron
+
+### Jobs
+A focused job board for startup hiring:
+- Post jobs with title, company, type, salary range, skills, location
+- Filter by job type (full-time, contract, internship, freelance)
+- Apply with a cover note directly from the platform
+- Track applications per listing
+
+### Messaging
+Real-time 1:1 messaging powered by Socket.IO:
+- Start conversations from any profile page
+- Instant message delivery via WebSocket
+- Typing indicators ("typing..." in chat header)
+- Online/offline status with green dots
+- Date separators and read receipts (blue checkmarks)
+- Message search and user search to start new chats
+
+### Profiles
+Rich founder profiles with:
+- Display name, handle, bio, avatar with gradient fallback
+- Job title, company, location, joined date
+- Skills and verticals as tags
+- Follower/following counts (live-calculated)
+- Post + repost feed merged chronologically
+- Proof of work entries
+- "Open to work" and "Freelancer" status badges
+- Edit profile modal with all fields
+- Settings page (account, notifications, privacy, security)
+
+### Notifications
+Event-driven notifications generated by lifecycle hooks:
+- Someone upvotes your post
+- Someone comments on your post
+- Someone follows you
+- Someone reviews your product
+- Mark as read / mark all read
+
+### Global Search
+Unified search across the entire platform:
+- Posts (by title)
+- Products (by name)
+- People (by name or handle)
+- Circles (by name)
+- Keyboard navigation (arrow keys + Enter)
+- 250ms debounced, parallel API calls
+
+## Backend API
+
+### Content Types (21)
+| Content Type | Purpose |
+|---|---|
+| Post | Social posts with title, body, images, polls |
+| Comment | Threaded comments with parent references |
+| Vote | Upvote/downvote on posts and comments |
+| Poll Vote | Individual poll option selections |
+| Saved Post | Bookmarked posts |
+| Repost | Simple reposts and quote reposts |
+| Circle | Community groups/categories |
+| Circle Member | User-circle membership |
+| Follow | User-to-user follow relationships |
+| Product | Launchpad submissions with lifecycle |
+| Product Review | Star ratings with review text |
+| Job | Job listings |
+| Job Application | Applications from users |
+| Conversation | DM threads |
+| Message | Individual chat messages |
+| Notification | Activity notifications |
+| Report | Content moderation reports |
+| Proof of Work | Portfolio/work samples |
+| Deal Signal | Investment signals |
+| Marketplace Listing | Service provider directory |
+| User (extended) | Extended users-permissions model |
+
+### Custom Endpoints
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/api/auth-sync` | POST | Clerk → Strapi user sync |
+| `/api/user-profile/:handle` | GET | Public profile by handle |
+| `/api/user-profile/me` | PUT | Update own profile |
+| `/api/user-profile-search` | GET | Search users by name/handle |
+| `/api/poll-vote` | POST | Vote on poll options |
+| `/api/seed/run` | POST | Seed database with sample data |
+
+### Lifecycle Hooks
+- **Vote created** → notification for post author + count update
+- **Comment created** → notification + comment count increment
+- **Follow created** → notification + follower count update
+- **Follow deleted** → follower count decrement
+- **Product review created** → notification + rating recalculation
+- **Product created** → hotScore calculation
+- **Message created** → lastMessageAt update + Socket.IO broadcast
+
+## Getting Started
+
+### Prerequisites
+- Node.js 20+
+- npm 6+
+- A Clerk account (free plan works)
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/mothivenkatesh/headstart.git
+cd headstart
+npm install
+cd frontend && npm install && cd ..
+```
+
+### 2. Configure environment
+
+```bash
+# Backend (.env)
+# Strapi auto-generates keys on first run
+
+# Frontend (frontend/.env.local)
+NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_YOUR_KEY
+CLERK_SECRET_KEY=sk_test_YOUR_KEY
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+```
+
+### 3. Start the backend
+
+```bash
 npm run develop
-# or
-yarn develop
+# Strapi starts on http://localhost:1337
+# Admin panel at http://localhost:1337/admin
+# 16 circles auto-seeded on first boot
 ```
 
-### `start`
+### 4. Seed sample data (optional)
 
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
-
-```
-npm run start
-# or
-yarn start
+```bash
+curl -X POST http://localhost:1337/api/seed/run
+# Creates 10 founder profiles, 20 posts, 8 products, 8 jobs, conversations, follows
 ```
 
-### `build`
+### 5. Start the frontend
 
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
-
-```
-npm run build
-# or
-yarn build
+```bash
+cd frontend
+npm run dev
+# Frontend starts on http://localhost:3000
 ```
 
-## ⚙️ Deployment
+### 6. Create your account
+1. Visit http://localhost:3000
+2. Click "Sign In" → create account via Clerk
+3. Complete your profile on the onboarding page
+4. Start posting in any circle
 
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
+## Design System
 
+Bluesky-inspired design with dark mode default. See `frontend/DESIGN_TOKENS.md` for the complete token reference.
+
+| Token | Value |
+|---|---|
+| Background | `#151D28` (Bluesky "dim") |
+| Surface secondary | `#1C2636` |
+| Text primary | `#F1F3F5` |
+| Border | `#2C3A4E` |
+| Brand | `#1A54F2` |
+| Font | Inter (400-700) |
+| Border radius | 8px cards, 9999px pills |
+| Shadows | Only on dropdowns/modals |
+
+## Test Suite
+
+Run the full E2E API test:
+
+```bash
+node test-full.js
+# 95/95 tests pass — auth, posts, comments, votes, bookmarks,
+# follows, products, reviews, jobs, messaging, reposts, polls,
+# notifications, profiles, reports, delete
 ```
-yarn strapi deploy
-```
 
-## 📚 Learn more
+## Deployment
 
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://strapi.io/blog) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
+### Strapi Cloud ($18/month)
+- Managed PostgreSQL + CDN included
+- Push to deploy from GitHub
 
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
+### Self-hosted (Railway/Render)
+- Deploy Strapi + PostgreSQL + Redis
+- Deploy frontend to Vercel
+- See capacity estimates in project docs
 
-## ✨ Community
+## License
 
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
-
----
-
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+MIT
