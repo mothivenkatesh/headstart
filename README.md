@@ -257,14 +257,18 @@ node test-full.js
 
 ## Deployment
 
-### Strapi Cloud ($18/month)
-- Managed PostgreSQL + CDN included
-- Push to deploy from GitHub
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for complete step-by-step deployment instructions covering:
 
-### Self-hosted (Railway/Render)
-- Deploy Strapi + PostgreSQL + Redis
-- Deploy frontend to Vercel
-- See capacity estimates in project docs
+- **Strapi Cloud + Vercel** (recommended, 5 min setup)
+- **AWS** (ECS + RDS + S3 + CloudFront)
+- **Railway** (budget-friendly, $15-20/month)
+- Post-deployment checklist and troubleshooting
+
+| Setup | Cost/month | Concurrent Users |
+|---|---|---|
+| Strapi Cloud + Vercel Free | ~$20 | 500-1,000 |
+| Strapi Cloud Pro + Vercel Pro | ~$110 | 2,000-5,000 |
+| AWS (full stack) | ~$50-100 | 10,000-50,000 |
 
 ## License
 
